@@ -3,7 +3,7 @@ name: WebHostMost Login 
 on:
   schedule:
     # 每月20号的 UTC 时间 00:00 运行
-    - cron: '0 0 20 * *'
+    - cron: '0 0 */2 * *'
   workflow_dispatch:  # 允许手动触发
 
 jobs:
