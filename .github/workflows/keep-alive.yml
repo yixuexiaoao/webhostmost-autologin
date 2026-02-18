@@ -1,0 +1,27 @@
+name: Keep Alive (Prevent Action Suspension)
+
+on:
+  schedule:
+    # 每 50 天的 UTC 00:00 运行一次（避开 60 天期限）
+    - cron: '0 0 */50 * *'
+  workflow_dispatch: # 允许手动触发测试
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # 必须赋予写入权限
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Config Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Push empty commit
+        run: |
+          # --allow-empty 允许没有任何文件修改的提交
+          git commit --allow-empty -m "chore: keep actions alive [skip ci]"
+          git push
